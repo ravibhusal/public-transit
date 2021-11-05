@@ -52,7 +52,6 @@ public class CustomerFile {
             String mobilePhoneNumber = "";
 
             while ((line = reader.readLine()) != null) {
-                // System.out.println(line);
                 lineIndex++;
                 if(lineIndex == 1){
                     firstName = line;
@@ -118,9 +117,8 @@ public class CustomerFile {
                 maxTripsPerWeekDay = Float.parseFloat(orderInfo.get(2));
                 maxTripsPerWeekendDays = Float.parseFloat(orderInfo.get(3));
                 maxTravelWeeksPerMonth = Float.parseFloat(orderInfo.get(4));
-                System.out.println(this.customers);
                 for(Customer customer : this.customers){
-                    if(customer.getLastName() == lastName || customer.getMobilePhoneNumber() == mobilePhoneNumber){
+                    if(customer.getLastName().equals(lastName) || customer.getMobilePhoneNumber().equals(mobilePhoneNumber)){
                         customerFound = true;
                         customer.calculateFareAndGenerateRecommendation(maxTripsPerWeekDay, maxTripsPerWeekendDays, maxTravelWeeksPerMonth);
                         break;
@@ -128,7 +126,7 @@ public class CustomerFile {
                 }
 
                 if(!customerFound){
-                    this.ordersWithoutCustomers.add(lastName + " " + mobilePhoneNumber);
+                    this.ordersWithoutCustomers.add("ORDER ERROR *** "+lastName + " " + mobilePhoneNumber + " *** has no matching customer record");
                 }
             }
             fileReader.close();
@@ -140,6 +138,9 @@ public class CustomerFile {
     }
 
     public void printToFile() throws Exception{
+        // sort array
+        Arrays.sort(this.customers, Comparator.comparing(Customer::getFirstName));
+
         StringBuilder content = new StringBuilder();
 
 

@@ -27,7 +27,7 @@ public class RegularCustomer extends Customer{
     }
 
     public Map getFareMap(){
-        Map fMap = this.getRewardNumber() == "NA" ? this.fareMap : this.discountedFareMap;
+        Map fMap = this.getRewardNumber().equals("NA") ? this.fareMap : this.discountedFareMap;
         return fMap;
     }
 

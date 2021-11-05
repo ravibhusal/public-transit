@@ -17,7 +17,7 @@ abstract class Customer {
         this.setCustomerType(customerType);
         this.setEmailAddress(emailAddress);
         this.setMobilePhoneNumber(mobilePhoneNumber);
-        this.setRecommendedCard("");
+        this.setRecommendedCard("***NO ORDER***");
     }
 
     public String getFirstName(){
@@ -96,12 +96,11 @@ abstract class Customer {
 
         // please review this logic
         String recommendedCard = "";
-        if(oneWeekCost > 50){
+        if(oneWeekCost >= 50){
             recommendedCard = "PAYG card at " + monthlyCostAfterDiscount + "/month";
         }else if(oneWeekCost < 50){
             recommendedCard = "PAYG card at " + oneWeekCostAfterDiscount + "/week"; 
         }
-
         this.setRecommendedCard(recommendedCard);
     }
 }

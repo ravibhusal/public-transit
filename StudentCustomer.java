@@ -29,7 +29,6 @@ public class StudentCustomer extends Customer{
         this.schoolName = schoolName;
     }
 
-    // @override
     public void calculateFareAndGenerateRecommendation(float maxTripsPerWeekDay, float maxTripsPerWeekendDays, float maxTravelWeeksPerMonth){
         this.calculateFare(maxTripsPerWeekDay, maxTripsPerWeekendDays, maxTravelWeeksPerMonth, fareMap);
     }
