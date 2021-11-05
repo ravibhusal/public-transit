@@ -72,16 +72,17 @@ public class CustomerFile {
                     mobilePhoneNumber = line;
                     lineIndex = 0;
                     if (customerType.equals("Regular")){
-                        RegularCustomer customer = new RegularCustomer(firstName, lastName, customerType, emailAddress, mobilePhoneNumber, customAttribute);
+                        int discount = customAttribute.equals("NA") ? 0 : 5;  
+                        RegularCustomer customer = new RegularCustomer(firstName, lastName, customerType, emailAddress, discount, mobilePhoneNumber, customAttribute);
                         addCustomersToCustomerArray(customerIndex, customer);
                     }else if(customerType.equals("Student")){
-                        StudentCustomer customer = new StudentCustomer(firstName, lastName, customerType, emailAddress, mobilePhoneNumber, customAttribute);
+                        StudentCustomer customer = new StudentCustomer(firstName, lastName, customerType, emailAddress, 15, mobilePhoneNumber, customAttribute);
                         addCustomersToCustomerArray(customerIndex, customer);
                     }else if(customerType.equals("Military")){
-                        MilitaryCustomer customer = new MilitaryCustomer(firstName, lastName, customerType, emailAddress, mobilePhoneNumber, customAttribute);
+                        MilitaryCustomer customer = new MilitaryCustomer(firstName, lastName, customerType, emailAddress, 10, mobilePhoneNumber, customAttribute);
                         addCustomersToCustomerArray(customerIndex, customer);
                     }else if(customerType.equals("Senior")){
-                        ElderlyCustomer customer = new ElderlyCustomer(firstName, lastName, customerType, emailAddress, mobilePhoneNumber, customAttribute);
+                        ElderlyCustomer customer = new ElderlyCustomer(firstName, lastName, customerType, emailAddress, 20, mobilePhoneNumber, customAttribute);
                         addCustomersToCustomerArray(customerIndex, customer);
                     }
                     customerIndex++;
@@ -118,7 +119,7 @@ public class CustomerFile {
                 maxTripsPerWeekendDays = Float.parseFloat(orderInfo.get(3));
                 maxTravelWeeksPerMonth = Float.parseFloat(orderInfo.get(4));
                 for(Customer customer : this.customers){
-                    if(customer.getLastName().equals(lastName) || customer.getMobilePhoneNumber().equals(mobilePhoneNumber)){
+                    if(customer.getLastName().equals(lastName) && customer.getMobilePhoneNumber().equals(mobilePhoneNumber)){
                         customerFound = true;
                         customer.calculateFareAndGenerateRecommendation(maxTripsPerWeekDay, maxTripsPerWeekendDays, maxTravelWeeksPerMonth);
                         break;

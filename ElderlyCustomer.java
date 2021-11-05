@@ -4,17 +4,15 @@ import java.util.*;
 public class ElderlyCustomer extends Customer{
     private String birthYear;
 
-    public static final Map<String, Float> fareMap = new HashMap<String, Float>();
+    public static final Map<String, Double> fareMap = new HashMap<String, Double>();
 
     static {
-        fareMap.put("weekdaysPerTrip", 1.80f);
-        fareMap.put("weekendsPerTrip", 1.00f);
-        fareMap.put("weeklyPassPercentage", 20.00f);
-        fareMap.put("monthlyPassPercentage", 20.00f);
+        fareMap.put("payGWeekdaysPerTrip", 1.80);
+        fareMap.put("payGWeekendsPerTrip", 1.00);
     }
 
-    public ElderlyCustomer(String firstName, String lastName, String customerType, String emailAddress, String mobilePhoneNumber, String birthYear){
-        super(firstName, lastName, customerType, emailAddress, mobilePhoneNumber);
+    public ElderlyCustomer(String firstName, String lastName, String customerType, String emailAddress, int discount, String mobilePhoneNumber, String birthYear){
+        super(firstName, lastName, customerType, emailAddress, discount, mobilePhoneNumber);
         this.setBirthYear(birthYear);
     }
 
@@ -30,7 +28,7 @@ public class ElderlyCustomer extends Customer{
         this.birthYear = birthYear;
     }
 
-    public void calculateFareAndGenerateRecommendation(float maxTripsPerWeekDay, float maxTripsPerWeekendDays, float maxTravelWeeksPerMonth){
+    public void calculateFareAndGenerateRecommendation(double maxTripsPerWeekDay, double maxTripsPerWeekendDays, double maxTravelWeeksPerMonth){
         this.calculateFare(maxTripsPerWeekDay, maxTripsPerWeekendDays, maxTravelWeeksPerMonth, fareMap);
     }
 

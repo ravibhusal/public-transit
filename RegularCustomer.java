@@ -4,31 +4,20 @@ import java.util.*;
 public class RegularCustomer extends Customer{
     private String rewardNumber;
 
-    public static final Map<String, Float> fareMap = new HashMap<String, Float>();
-    public static final Map<String, Float> discountedFareMap = new HashMap<String, Float>();
+    public static final Map<String, Double> fareMap = new HashMap<String, Double>();
 
     static {
-        fareMap.put("weekdaysPerTrip", 3.00f);
-        fareMap.put("weekendsPerTrip", 2.00f);
-        fareMap.put("weeklyPassPercentage", 0.00f);
-        fareMap.put("monthlyPassPercentage", 0.00f);
+        fareMap.put("payGWeekdaysPerTrip", 3.00);
+        fareMap.put("payGWeekendsPerTrip", 2.00);
     }
 
-    static {
-        discountedFareMap.put("weekdaysPerTrip", 2.50f);
-        discountedFareMap.put("weekendsPerTrip", 1.50f);
-        discountedFareMap.put("weeklyPassPercentage", 5f);
-        discountedFareMap.put("monthlyPassPercentage", 5f);
-    }
-
-    public RegularCustomer(String firstName, String lastName, String customerType, String emailAddress, String mobilePhoneNumber, String rewardNumber){
-        super(firstName, lastName, customerType, emailAddress, mobilePhoneNumber);
+    public RegularCustomer(String firstName, String lastName, String customerType, String emailAddress, int discount, String mobilePhoneNumber, String rewardNumber){
+        super(firstName, lastName, customerType, emailAddress, discount, mobilePhoneNumber);
         this.setRewardNumber(rewardNumber);
     }
 
     public Map getFareMap(){
-        Map fMap = this.getRewardNumber().equals("NA") ? this.fareMap : this.discountedFareMap;
-        return fMap;
+        return this.fareMap;
     }
 
     public String getRewardNumber(){
@@ -39,7 +28,7 @@ public class RegularCustomer extends Customer{
         this.rewardNumber = rewardNumber;
     }
 
-    public void calculateFareAndGenerateRecommendation(float maxTripsPerWeekDay, float maxTripsPerWeekendDays, float maxTravelWeeksPerMonth){
+    public void calculateFareAndGenerateRecommendation(double maxTripsPerWeekDay, double maxTripsPerWeekendDays, double maxTravelWeeksPerMonth){
         this.calculateFare(maxTripsPerWeekDay, maxTripsPerWeekendDays, maxTravelWeeksPerMonth, fareMap);
     }
 

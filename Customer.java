@@ -6,16 +6,17 @@ abstract class Customer {
     public String lastName;
     public String customerType;
     public String emailAddress;
-    public String discount;
+    public int discount;
     public String mobilePhoneNumber;
     public String recommendedCard;
 
     public Customer(String firstName, String lastName, String customerType, 
-                    String emailAddress,  String mobilePhoneNumber){
+                    String emailAddress, int discount, String mobilePhoneNumber){
         this.setFirstName(firstName);
         this.setLastName(lastName);
         this.setCustomerType(customerType);
         this.setEmailAddress(emailAddress);
+        this.setDiscount(discount);
         this.setMobilePhoneNumber(mobilePhoneNumber);
         this.setRecommendedCard("***NO ORDER***");
     }
@@ -34,6 +35,10 @@ abstract class Customer {
 
     public String getEmailAddress(){
         return this.emailAddress;
+    }
+
+    public int getDiscount(){
+        return this.discount;
     }
 
     public String getMobilePhoneNumber(){
@@ -60,6 +65,10 @@ abstract class Customer {
         this.emailAddress = emailAddress;
     }
 
+    public void setDiscount(int discount){
+        this.discount = discount;
+    }
+
     public void setMobilePhoneNumber(String mobilePhoneNumber){
         this.mobilePhoneNumber = mobilePhoneNumber;
     }
@@ -68,38 +77,36 @@ abstract class Customer {
         this.recommendedCard = recommendedCard;
     }
 
-    public void calculateFareAndGenerateRecommendation(float maxTripsPerWeekDay, float maxTripsPerWeekendDays, float maxTravelWeeksPerMonth){
+    public void calculateFareAndGenerateRecommendation(double maxTripsPerWeekDay, double maxTripsPerWeekendDays, double maxTravelWeeksPerMonth){
     }
 
-    public void calculateFare(float maxTripsPerWeekDay, float maxTripsPerWeekendDays, float maxTravelWeeksPerMonth, Map<String, Float> fareMap){
-        float perDayWeekdayCost = fareMap.get("weekdaysPerTrip") * maxTripsPerWeekDay;
-        if(perDayWeekdayCost > 10) {
-            perDayWeekdayCost = 10;
+    public void calculateFare(double maxTripsPerWeekDay, double maxTripsPerWeekendDays, double maxTravelWeeksPerMonth, Map<String, Double> fareMap){
+        double payGPerDayWeekdayCost = fareMap.get("payGWeekdaysPerTrip") * maxTripsPerWeekDay;
+        if(payGPerDayWeekdayCost > 10) {
+            payGPerDayWeekdayCost = 10;
         }
 
-        float perDayWeekendCost = fareMap.get("weekendsPerTrip") * maxTripsPerWeekendDays;
+        double payGPerDayWeekendCost = fareMap.get("payGWeekendsPerTrip") * maxTripsPerWeekendDays;
 
-        if(perDayWeekendCost > 10){
-            perDayWeekendCost = 10;
+        if(payGPerDayWeekendCost > 10){
+            payGPerDayWeekendCost = 10;
         }
 
-        float oneWeekCost = perDayWeekdayCost * 5 + perDayWeekendCost * 2;
-        float monthlyCost = oneWeekCost * maxTravelWeeksPerMonth;
+        double payGtotalWeekCost = payGPerDayWeekdayCost * 5 + payGPerDayWeekendCost * 2;
 
-        float weeklyPassDiscountPercentage = fareMap.get("weeklyPassPercentage");
-
-        float monthlyPassDiscountPercentage = fareMap.get("monthlyPassPercentage");
-
-        float oneWeekCostAfterDiscount = oneWeekCost - (weeklyPassDiscountPercentage * oneWeekCost)/100;
-
-        float monthlyCostAfterDiscount = monthlyCost - (monthlyPassDiscountPercentage * monthlyCost)/100;
+        double payGtotalMonthCost = payGtotalWeekCost * maxTravelWeeksPerMonth;
 
         // please review this logic
         String recommendedCard = "";
-        if(oneWeekCost >= 50){
-            recommendedCard = "PAYG card at " + monthlyCostAfterDiscount + "/month";
-        }else if(oneWeekCost < 50){
-            recommendedCard = "PAYG card at " + oneWeekCostAfterDiscount + "/week"; 
+
+        if(payGtotalMonthCost > 100){
+            recommendedCard = "Monthly pass at " + (payGtotalMonthCost - (this.discount * payGtotalMonthCost)/100)  + "/month";
+        }else if(payGtotalMonthCost < 100){
+            if(payGtotalWeekCost > 50){
+                recommendedCard = "Weekly pass at " + (payGtotalWeekCost - (this.discount * payGtotalWeekCost)/100)  + "/week";
+            }else if(payGtotalWeekCost < 50){
+                recommendedCard = "PAYG card at " + payGtotalWeekCost + "/week";
+            }
         }
         this.setRecommendedCard(recommendedCard);
     }
